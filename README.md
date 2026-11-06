@@ -72,5 +72,4 @@ Explore a multi-agent AI architecture built with n8n, demonstrating collaboratio
 
 
 
-- [Autonomous HubSpot Lead Follow-up Agent](https://github.com/Sobia003/ai-research-rag-multi-agent-system/tree/main/04-autonomous-lead-follow-up-agent) – An AI-powered workflow that evaluates, scores, prioritizes, and recommends follow-up actions for HubSpot leads.
 
