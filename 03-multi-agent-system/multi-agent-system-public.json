@@ -1,0 +1,429 @@
+{
+  "name": "AI Research - Multi Agent System",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {
+          "allowFileUploads": true,
+          "allowedFilesMimeTypes": "application/pdf",
+          "responseMode": "responseNodes"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        -208
+      ],
+      "id": "6946bbb0-d1a2-4b42-a12f-0ca015788686",
+      "name": "When chat message received"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.6-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        528,
+        16
+      ],
+      "id": "2faff238-2af5-4b65-87c9-207363e3b2bf",
+      "name": "Google Gemini Chat Model"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ \n  \"Research Plan:\\n\" + $json.research_plan +\n  \"\\n\\nRetrieved Evidence from the selected PDF:\\n\" +\n  $json.retrieved_evidence\n}}",
+        "options": {
+          "systemMessage": "You are the Research Agent in an AI Research and Knowledge Intelligence System.\n\nYour responsibility is to investigate the research question using ONLY the retrieved evidence supplied in your input.\n\nThe input contains:\n1. A Research Plan from the Research Coordinator.\n2. Retrieved Evidence from the PDF selected by the user.\n\nFollow these rules:\n\n1. Use only the retrieved evidence supplied in your input.\n2. Do not attempt to search other documents or external sources.\n3. Extract relevant facts, explanations, definitions, and supporting evidence.\n4. Identify the source document using its metadata when available.\n5. Never invent document names, page numbers, authors, citations, or sources.\n6. Clearly distinguish information explicitly stated in the evidence from interpretations.\n7. If evidence is insufficient, explicitly state what information is missing.\n8. Do not use general AI knowledge to fill evidence gaps.\n9. Do not write the final research report.\n\nReturn your findings using:\n\nResearch Question\n\nRetrieved Evidence\n\nSource Information\n\nKey Findings\n\nInterpretations\n\nMissing Information\n\nEvidence Limitations\n\nReturn a structured research summary for the Analysis Agent."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1376,
+        -208
+      ],
+      "id": "4f0578a3-f368-4e9b-bc09-005ebce6e1d9",
+      "name": "Research Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        1456,
+        16
+      ],
+      "id": "055a2449-1900-48b6-ab11-df89df2d606e",
+      "name": "Google Gemini Chat Model1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.output }}",
+        "options": {
+          "systemMessage": "You are the Analysis Agent in an AI Research and Knowledge Intelligence System.\n\nYour responsibility is to analyze the research findings provided by the Research Agent.\n\nFollow these rules:\n\n1. Use only the research findings and evidence provided by the Research Agent.\n2. Identify important patterns, themes, and relationships.\n3. Compare findings only when supporting evidence is available.\n4. Separate confirmed facts from interpretations.\n5. Do not introduce facts from your general knowledge.\n6. Do not invent statistics, sources, citations, or research findings.\n7. If evidence is insufficient, clearly explain what is missing.\n8. Identify contradictions and limitations in the available evidence.\n9. Do not treat unsupported claims as confirmed facts.\n10. Do not write the final research report.\n\nOrganize your response into:\n\n- Main Research Insights\n- Important Patterns and Relationships\n- Confirmed Facts\n- Interpretations\n- Contradictions\n- Evidence Gaps\n- Research Limitations\n\nReturn your analysis to the Fact-Checking Agent."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1728,
+        -208
+      ],
+      "id": "93030537-f083-4e05-a1ff-7cac44cb8ea6",
+      "name": "Analysis Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.1-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        1808,
+        16
+      ],
+      "id": "8e66e097-2e58-48d2-b89f-53844c3aeab8",
+      "name": "Google Gemini Chat Model2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.output }}",
+        "options": {
+          "systemMessage": "You are the Fact-Checking Agent in an AI Research and Knowledge Intelligence System.\n\nYour responsibility is to verify the research analysis against the actual evidence supplied by the Research Agent.\n\nFollow these rules:\n\n1. Check every important factual claim against the supplied research evidence.\n2. Do not use general AI knowledge as proof.\n3. Mark a claim as Verified only when supporting evidence is explicitly provided.\n4. Mark claims without sufficient evidence as Unverified.\n5. Identify claims that contradict the supplied documents.\n6. Check whether source names and page numbers are actually provided.\n7. Never invent citations, document names, page numbers, or external sources.\n8. Distinguish direct evidence from interpretations.\n9. If the evidence is insufficient, clearly explain why.\n10. Do not write the final research report.\n\nOrganize your response into:\n\n- Verified Claims\n- Unverified Claims\n- Contradictory Claims\n- Source and Citation Checks\n- Missing Evidence\n- Overall Fact-Checking Assessment\n\nReturn your results to the Report Generation Agent.\n\nDOCUMENT VERIFICATION RULES:\n\n1. Distinguish between information not found in retrieved passages and information confirmed absent from the entire document.\n2. If relevant information was not retrieved, label it:\n   \"Not found in retrieved evidence — absence from the full document is not verified.\"\n3. Never claim that information is absent from the entire document based only on a limited retrieval search.\n4. Mark information as \"Confirmed absent from the document\" only when the complete document has been checked.\n5. Clearly state when full-document verification has not been performed."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        2080,
+        -208
+      ],
+      "id": "5713f135-a46b-459d-bdd7-3e8138086cbe",
+      "name": "Fact-Checking Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.1-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        2160,
+        16
+      ],
+      "id": "9f945d18-afcd-481d-932a-6d8f65766a79",
+      "name": "Google Gemini Chat Model3"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.output }}",
+        "options": {
+          "systemMessage": "You are the Report Generation Agent in an AI Research and Knowledge Intelligence System.\n\nYour responsibility is to create a professional research report using the research findings, analysis, and fact-checking results provided by the previous agents.\n\nSTRICT RULES:\n\n1. Use only the information supplied by the previous agents.\n2. Never introduce new facts from general AI knowledge.\n3. Never invent sources, citations, page numbers, statistics, or research findings.\n4. Clearly distinguish verified facts from interpretations.\n5. Label unverified claims as unverified.\n6. Never describe a claim as verified if the Fact-Checking Agent did not verify it.\n7. Clearly disclose missing evidence and research limitations.\n8. If the available evidence is insufficient, say so rather than filling gaps with assumptions.\n\nSTRUCTURE THE REPORT:\n\n1. Research Title\n2. Executive Summary\n3. Research Objectives\n4. Key Findings\n5. Detailed Analysis\n6. Fact-Checking Results\n7. Evidence Gaps and Limitations\n8. Conclusions\n9. Recommendations\n\nWrite in clear, professional language with appropriate headings and bullet points.\n\nThe report must accurately represent the available evidence. Reliability is more important than making the report appear comprehensive.\nDOCUMENT ABSENCE VERIFICATION:\n\n1. Clearly distinguish between \"Not found in retrieved evidence\" and \"Confirmed absent from the entire document.\"\n2. Never claim that information is absent from the entire PDF unless the complete document was checked.\n3. If only retrieved passages were examined, explicitly state:\n   \"The information was not found in the retrieved passages. Its absence from the complete document has not been verified.\"\n4. Accurately report the verification status provided by the Fact-Checking Agent.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        2432,
+        -208
+      ],
+      "id": "23043e14-48b8-4170-9a32-ab10158c8f0e",
+      "name": "Report Generation Agent"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are the Research Coordinator Agent in an AI Research and Knowledge Intelligence System.\n\nYour responsibility is to understand the user's research request and create a clear research plan.\n\nIMPORTANT: The user may specify a particular PDF filename and a research question.\n\nYou must:\n\n1. Identify the exact PDF filename provided by the user.\n2. Preserve the filename exactly as written, including spaces, brackets, symbols, and file extension.\n3. Identify and preserve the user's original research question.\n4. Include both the selected filename and research question in your output.\n5. Create a research plan based on the user's question.\n6. Identify what information needs to be retrieved from the selected PDF.\n7. Organize the research tasks in a logical sequence.\n\nSTRICT RULES:\n\n- Never change, shorten, or invent a filename.\n- Never silently omit the selected filename.\n- Do not search or compare other documents.\n- Do not generate research findings yourself.\n- If the user does not provide a filename, clearly state that the filename is missing.\n- If the research question is missing, clearly state that the question is missing.\n\nReturn your output using this structure:\n\nSelected PDF Filename:\n[Exact filename supplied by the user]\n\nResearch Question:\n[Original research question]\n\nResearch Plan:\n[Numbered research tasks]\n\nRetrieval Requirements:\n[Instructions to search only the selected PDF]\n\nDo not generate the final research report.ok"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        448,
+        -208
+      ],
+      "id": "b2ed6576-d88f-4919-96c2-ccbd85f64fe5",
+      "name": "Research Coordinator Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.1-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        2512,
+        16
+      ],
+      "id": "982359c3-4f20-4201-a59f-f551de132c37",
+      "name": "Google Gemini Chat Model4"
+    },
+    {
+      "parameters": {
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chat",
+      "typeVersion": 1.3,
+      "position": [
+        2784,
+        -208
+      ],
+      "id": "4abd916a-7da4-4772-9db5-a632f8a1bd5b",
+      "name": "Message"
+    },
+    {
+      "parameters": {
+        "mode": "load",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "prompt": "={{ $('Extract Document Selection').item.json.chatInput }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "document_title",
+                "value": "={{ $('Extract Document Selection').item.json.document_title }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        800,
+        -208
+      ],
+      "id": "ebfbf939-e64b-4bcd-af6e-ef823582f74e",
+      "name": "Supabase Vector Store1"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        880,
+        16
+      ],
+      "id": "370f3423-60a5-4857-9794-38751d65d39d",
+      "name": "Embeddings Google Gemini1"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().map(item => {\n  const message = item.json.chatInput || \"\";\n\n  const documentMatch = message.match(/Document:\\s*(.+)/i);\n  const questionMatch = message.match(/Question:\\s*([\\s\\S]+)/i);\n\n  return {\n    json: {\n      ...item.json,\n      document_title: documentMatch\n        ? documentMatch[1].trim()\n        : \"\",\n      chatInput: questionMatch\n        ? questionMatch[1].trim()\n        : message.trim()\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        -208
+      ],
+      "id": "1a41129a-dc77-44c7-80d3-1edf39485e52",
+      "name": "Extract Document Selection"
+    },
+    {
+      "parameters": {
+        "jsCode": "const documents = $input.all();\n\nconst researchPlan = $('Research Coordinator Agent').first().json.output;\n\nconst evidence = documents.map((item, index) => {\n  const doc = item.json.document || item.json;\n\n  return {\n    section: index + 1,\n    content: doc.pageContent || doc.content || \"\",\n    metadata: doc.metadata || {},\n    score: item.json.score ?? null\n  };\n});\n\nreturn [{\n  json: {\n    research_plan: researchPlan,\n    retrieved_evidence: JSON.stringify(evidence, null, 2)\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1152,
+        -208
+      ],
+      "id": "a95e0035-d7f2-4d77-984f-e2a74b3fe661",
+      "name": "Combine Research Plan and Evidence"
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Extract Document Selection",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Research Coordinator Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Research Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Research Agent": {
+      "main": [
+        [
+          {
+            "node": "Analysis Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Analysis Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analysis Agent": {
+      "main": [
+        [
+          {
+            "node": "Fact-Checking Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Fact-Checking Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fact-Checking Agent": {
+      "main": [
+        [
+          {
+            "node": "Report Generation Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Research Coordinator Agent": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector Store1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Report Generation Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Report Generation Agent": {
+      "main": [
+        [
+          {
+            "node": "Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store1": {
+      "main": [
+        [
+          {
+            "node": "Combine Research Plan and Evidence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Document Selection": {
+      "main": [
+        [
+          {
+            "node": "Research Coordinator Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine Research Plan and Evidence": {
+      "main": [
+        [
+          {
+            "node": "Research Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  }
+}
