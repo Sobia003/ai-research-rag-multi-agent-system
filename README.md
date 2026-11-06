@@ -53,4 +53,21 @@ The system is divided into three major workflows:
 
 This project was developed as part of a practical AI workflow development sprint. The workflows demonstrate document processing, retrieval-based AI, and multi-agent automation using n8n.
 
+## Project Workflows
+
+### 1. AI Research – Document Ingestion
+Upload research PDFs, extract their text, split content into chunks, generate embeddings using Google Gemini, and store them in Supabase Vector Store.
+
+📁 [View Document Ingestion](./01-document-ingestion/)
+
+### 2. AI Research – RAG Retrieval
+Retrieve relevant information from stored research documents using semantic search and generate context-grounded answers with Google Gemini.
+
+📁 [View RAG Retrieval](./02-rag-retrieval/)
+
+### 3. Multi-Agent System
+Explore a multi-agent AI architecture built with n8n, demonstrating collaboration between AI agents in an automated workflow.
+
+📁 [View Multi-Agent System](./03-multi-agent-system/)
+
 **Author:** Sobia Khan
