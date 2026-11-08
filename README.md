@@ -88,3 +88,8 @@ An automated appointment booking and payment workflow built with n8n, Google She
 
 📁 [View Doctor Appointment Automation](https://github.com/Sobia003/doctor-appointment-automation)
 
+### 7. Lead Management System
+
+An automated lead management workflow built with n8n and HubSpot CRM. It captures and validates leads, creates CRM contacts and deals, assigns sales representatives, and sends automated email notifications.
+
+📁 [View Lead Management System](https://github.com/Sobia003/lead-management-system)
