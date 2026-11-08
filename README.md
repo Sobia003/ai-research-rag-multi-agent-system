@@ -70,9 +70,5 @@ Explore a multi-agent AI architecture built with n8n, demonstrating collaboratio
 
 📁 [View Multi-Agent System](./03-multi-agent-system/)
 
-### 4. Autonomous HubSpot Lead Follow-up Agent
 
-An AI-powered lead decision workflow built with n8n, HubSpot, and Google Gemini. It evaluates contacts, assigns lead scores, prioritizes prospects, and recommends personalized follow-up actions.
-
-📁 [View Autonomous Lead Follow-up Agent](https://github.com/Sobia003/04-autonomous-lead-follow-up-agent)
 
