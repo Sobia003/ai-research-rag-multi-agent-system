@@ -70,5 +70,16 @@ Explore a multi-agent AI architecture built with n8n, demonstrating collaboratio
 
 📁 [View Multi-Agent System](./03-multi-agent-system/)
 
+### 4. Autonomous HubSpot Lead Follow-up Agent
+
+An AI-powered lead decision workflow built with n8n, HubSpot, and Google Gemini. It evaluates contact information, scores and prioritizes leads, recommends follow-up actions, and generates personalized email drafts.
+
+📁 [View Autonomous HubSpot Lead Follow-up Agent](https://github.com/Sobia003/04-autonomous-lead-follow-up-agent)
+
+### 5. Travel Agency AI Booking Agent
+
+An end-to-end AI-powered travel booking system built with n8n, Google Gemini, Stripe, and Gmail. Features conversational tour booking, availability checks, automated payment links, and payment confirmation emails through Stripe webhooks.
+
+📁 [View Travel Agency AI Booking Agent](https://github.com/Sobia003/travel-agency-ai-booking-agent)
 
 
