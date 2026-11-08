@@ -82,4 +82,9 @@ An end-to-end AI-powered travel booking system built with n8n, Google Gemini, St
 
 📁 [View Travel Agency AI Booking Agent](https://github.com/Sobia003/travel-agency-ai-booking-agent)
 
+### 6. Doctor Appointment Automation
+
+An automated appointment booking and payment workflow built with n8n, Google Sheets, Stripe, Gmail, and Google Calendar. It validates appointment requests, checks slot availability, creates payment links, and confirms bookings after successful payment.
+
+📁 [View Doctor Appointment Automation](https://github.com/Sobia003/doctor-appointment-automation)
 
