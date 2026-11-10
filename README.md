@@ -93,3 +93,9 @@ An automated appointment booking and payment workflow built with n8n, Google She
 An automated lead management workflow built with n8n and HubSpot CRM. It captures and validates leads, creates CRM contacts and deals, assigns sales representatives, and sends automated email notifications.
 
 📁 [View Lead Management System](https://github.com/Sobia003/lead-management-system)
+
+### 8. Reminder AI Chat Assistant
+
+An AI-powered reminder assistant built with n8n and Google Calendar. It creates, lists, and updates calendar events through natural-language chat, with Asia/Karachi timezone handling.
+
+📁 [View Reminder AI Chat Assistant](https://github.com/Sobia003/reminder-ai-chat-assistant)
